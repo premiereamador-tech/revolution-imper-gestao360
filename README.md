@@ -186,6 +186,14 @@ docker compose up -d app                 # http://servidor:3000
 
 O container `app` aplica migrations pendentes ao iniciar, roda como usuário sem privilégios e tem healthcheck. Coloque um proxy reverso com HTTPS na frente (Caddy, Nginx, Traefik). Cookies de sessão são `Secure` em produção.
 
+### Netlify (em uso)
+
+Repositório ligado à Netlify: cada push na branch `main` gera um deploy automático.
+- Banco: **Netlify Database** (provisionado sozinho). As migrations ficam em `netlify/database/migrations/` e são aplicadas antes de publicar. Nunca edite uma migration já aplicada: crie outra.
+- Arquivos/fotos: **Netlify Blobs** (privados, servidos só pela rota autenticada `/api/files`).
+- Variáveis no painel: `APP_URL`, `CRON_SECRET`.
+- Fotos são reduzidas no navegador antes do envio, por causa do limite de tamanho por requisição das funções.
+
 ### Sem Docker (qualquer VPS / PaaS com Node)
 
 ```bash
