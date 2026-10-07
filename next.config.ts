@@ -12,12 +12,13 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Na Netlify o adaptador oficial cuida do empacotamento; em Docker/VPS usamos standalone.
+  output: process.env.NETLIFY ? undefined : "standalone",
   poweredByHeader: false,
   serverExternalPackages: ["pg"],
   experimental: {
     // Fotos de obra (até 20 por envio). Vídeos grandes devem usar upload direto ao storage.
-    serverActions: { bodySizeLimit: "60mb" },
+    serverActions: { bodySizeLimit: "25mb" },
   },
   turbopack: {
     rules: {

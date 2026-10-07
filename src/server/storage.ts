@@ -51,9 +51,24 @@ function s3Driver(): StorageDriver {
   };
 }
 
+/** Netlify Blobs (site-wide, privado — servido só pela rota autenticada /api/files). */
+function netlifyDriver(): StorageDriver {
+  const store = async () => (await import("@netlify/blobs")).getStore({ name: "uploads", consistency: "strong" });
+  return {
+    async put(key, body, contentType) {
+      await (await store()).set(key, new Uint8Array(body).buffer as ArrayBuffer, { metadata: { contentType } });
+    },
+    async get(key) {
+      const data = await (await store()).get(key, { type: "arrayBuffer" });
+      if (!data) throw new Error("Arquivo não encontrado");
+      return Buffer.from(data);
+    },
+  };
+}
+
 let driver: StorageDriver | null = null;
 export function storage(): StorageDriver {
-  driver ??= env.STORAGE_DRIVER === "s3" ? s3Driver() : localDriver;
+  driver ??= env.STORAGE_DRIVER === "s3" ? s3Driver() : env.STORAGE_DRIVER === "netlify" ? netlifyDriver() : localDriver;
   return driver;
 }
 

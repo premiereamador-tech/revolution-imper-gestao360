@@ -11,7 +11,7 @@ const schema = z.object({
   DATABASE_POOL_MAX: z.coerce.number().int().positive().default(10),
   SESSION_TTL_HOURS: z.coerce.number().int().positive().default(12),
   APP_URL: z.string().default("http://localhost:3000"),
-  STORAGE_DRIVER: z.enum(["local", "s3"]).default("local"),
+  STORAGE_DRIVER: z.enum(["local", "s3", "netlify"]).default(process.env.NETLIFY || process.env.SITE_ID ? "netlify" : "local"),
   STORAGE_LOCAL_DIR: z.string().default("./storage"),
   S3_ENDPOINT: z.string().optional(),
   S3_REGION: z.string().optional(),
