@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0c4a6e"/><stop offset="1" stop-color="#176ca0"/></linearGradient>
+<pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(15)"><rect width="40" height="40" fill="none"/><path d="M0 20h40" stroke="#ffffff" stroke-opacity=".08" stroke-width="10"/></pattern></defs>
+<rect width="800" height="600" fill="url(#g)"/><rect width="800" height="600" fill="url(#p)"/>
+<path d="M0 440 L240 360 L420 410 L590 330 L800 380 V600 H0Z" fill="#000" fill-opacity=".22"/>
+<g fill="#fff" font-family="Arial, sans-serif"><text x="40" y="70" font-size="34" font-weight="700" fill-opacity=".95">DURANTE</text>
+<text x="40" y="104" font-size="18" fill-opacity=".75">Foto de demonstração 1</text></g></svg>

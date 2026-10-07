@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
+/*
+ * Revolution Imper — tokens extraídos do logo.
+ * Azul/água (gota), verde (IMPER), vermelho (telhado), grafite do escudo.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --abyss: #0e2a3b;
+  --abyss-2: #133a50;
+  --primary: #176ca0;
+  --primary-strong: #115680;
+  --primary-soft: #e3f0f8;
+  --accent: #3eb7c1;
+  --accent-soft: #e2f5f6;
+  --secondary: #6f9e3a;
+  --secondary-soft: #edf5e3;
+  --success: #3f8f3a;
+  --success-soft: #e6f4e4;
+  --warning: #c27c00;
+  --warning-soft: #fdf3dc;
+  --danger: #bd2c1e;
+  --danger-soft: #fbe7e5;
+  --background: #f2f4f5;
+  --surface: #ffffff;
+  --surface-2: #f7f9fa;
+  --text: #10212c;
+  --muted: #5b6b76;
+  --border: #dce2e6;
+  --ring: #3eb7c1;
 }
 
 @theme inline {
+  --color-abyss: var(--abyss);
+  --color-abyss-2: var(--abyss-2);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Inter Variable", ui-sans-serif, sans-serif;
+  --radius-card: 12px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.005em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Linha d'água: animação única ao carregar o resultado da obra */
+@keyframes fill-up {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.waterline-fill {
+  transform-origin: left;
+  animation: fill-up 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+dialog::backdrop {
+  background: rgb(14 42 59 / 0.55);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  .print-full {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }

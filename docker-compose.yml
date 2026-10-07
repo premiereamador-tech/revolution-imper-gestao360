@@ -1,0 +1,41 @@
+# Desenvolvimento/produção simples em um servidor.
+#   docker compose up -d db                      → só o PostgreSQL (para `npm run dev`)
+#   docker compose run --rm setup                → migrations + seed (SEED_DEMO=false em produção)
+#   docker compose up -d app                     → aplicação em http://localhost:3000
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-revolution}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-revolution_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-revolution_imper}
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-revolution}"]
+      interval: 5s
+      retries: 10
+
+  setup:
+    build: { context: ., target: tools }
+    profiles: ["setup"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-revolution}:${POSTGRES_PASSWORD:-revolution_dev}@db:5432/${POSTGRES_DB:-revolution_imper}
+    depends_on: { db: { condition: service_healthy } }
+
+  app:
+    build: { context: ., target: runner }
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-revolution}:${POSTGRES_PASSWORD:-revolution_dev}@db:5432/${POSTGRES_DB:-revolution_imper}
+      STORAGE_LOCAL_DIR: /app/storage
+    ports: ["3000:3000"]
+    volumes: [uploads:/app/storage]
+    depends_on: { db: { condition: service_healthy } }
+
+volumes:
+  pgdata:
+  uploads:
